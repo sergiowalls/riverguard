@@ -1,9 +1,9 @@
 <template>
   <v-container grid-list-md fluid>
     <v-layout row>
-      <v-flex xs4><k-p-i title="SOMETHING" icon="insert_comment" content="3%" color="primary"></k-p-i></v-flex>
-      <v-flex xs4><k-p-i title="SOMETHING" icon="warning" content="3%" color="warning"></k-p-i></v-flex>
-      <v-flex xs4><k-p-i title="SOMETHING" icon="insert_chart" content="3%" color="error"></k-p-i></v-flex>
+      <v-flex xs4><k-p-i title="Tweets recorded" icon="insert_comment" content="267 in last hour" color="primary"></k-p-i></v-flex>
+      <v-flex xs4><k-p-i title="New Locations" icon="warning" content="3 in last hour" color="warning"></k-p-i></v-flex>
+      <v-flex xs4><k-p-i title="Increment" icon="insert_chart" content="3%" color="error"></k-p-i></v-flex>
     </v-layout>
     <v-layout row>
       <v-flex xs8>
@@ -20,16 +20,22 @@
 
 <script>
   import KPI from "./KPI";
+  import {TestResource} from '../api/TestResource'
 export default {
   components: {KPI},
   name: 'home',
   data () {
       return {
-        mymap: null
+        mymap: null,
+        points: [],
+        markers: [],
+        customDefault: null
       }
   },
-  mounted : function () {
-    this.mymap = L.map('mapid').setView([36.5219,  -6.2783], 10);
+  mounted: function () {
+
+    this.mymap = L.map('mapid').setView([36.6621, -5.7604], 10);
+
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
       maxZoom: 18,
       attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
@@ -37,6 +43,22 @@ export default {
       'Imagery © <a href="http://mapbox.com">Mapbox</a>',
       id: 'mapbox.streets'
     }).addTo(this.mymap);
+
+    TestResource().get().then(response => {
+      var x = response.body
+      console.log(x.statuses)
+      var json = x.statuses
+
+      for (var key in x.statuses) {
+        if (json[key].geo !== null) {
+          var coords = json[key].geo.coordinates
+          this.markers[key] = L.marker([coords[0], coords[1]]).addTo(this.mymap)
+          this.markers[key].bindPopup(json[key].text)
+        }
+      }
+
+    })
+
   }
 }
 </script>
