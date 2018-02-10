@@ -3,14 +3,18 @@ import os
 from logging import INFO
 from logging import basicConfig
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, send_from_directory
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
 
+@app.route('../frontend/dist/<path:path>')
+def send_js(path):
+    return send_from_directory('js', path)
 
-@app.route('/')
+
+@app.route('/log')
 def hello():
     return read_file(os.environ['APP_LOG'])
 
