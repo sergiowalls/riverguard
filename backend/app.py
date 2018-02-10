@@ -35,7 +35,7 @@ def tweet_list():
     result = t.get_json() 
     #tweets = repository.list()
     #print results
-    return result
+    return jsonify(result)
 
 
 if __name__ == '__main__':
