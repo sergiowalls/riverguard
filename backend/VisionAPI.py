@@ -25,14 +25,13 @@ class VisionAPI:
             json += self.build_image_json(image_url) + ","
         json += "]}"
 
-        print(json)
-
         r = requests.post(self.build_url(), data=json).json()
 
         total_labels = []
         for resp in r["responses"]:
             labels = []
-            for label in resp["labelAnnotations"]:
-                labels.append({"Label": label["description"], "Score": label["score"]})
+            if "labelAnnotations" in resp:
+                for label in resp["labelAnnotations"]:
+                    labels.append({"Label": label["description"], "Score": label["score"]})
             total_labels.append(labels)
         return total_labels
