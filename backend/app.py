@@ -7,7 +7,7 @@ from flask_cors import CORS
 
 from persistence import Persistence
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='')
 CORS(app)
 
 @app.route('/<path:path>')
