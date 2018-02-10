@@ -12,11 +12,8 @@ Vue.config.productionTip = false
 Vue.use(Vuetify)
 Vue.use(L)
 Vue.use(VueResource)
-Vue.http.options.root = "SOMESITE"
+Vue.http.options.root = "http://riverguard.ddns.net:8080/"
 Vue.http.options.crossOrigin = true
-
-
-import '../node_modules/leaflet/dist/leaflet.css';
 
 /* eslint-disable no-new */
 new Vue({
