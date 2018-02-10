@@ -9,3 +9,6 @@ https://api.twitter.com/1.1/search/tweets.json?q=riverguard&latitude,longitude,r
 examples:
 
 https://api.twitter.com/1.1/search/tweets.json?oauth_consumer_key=h5csBXeGpJmLma9IgnoV3JWfn&oauth_token=223212203-5n4o9eTcRmKaxoPxtAelhufNzkdOTCSjn1dpku6U&oauth_signature_method=HMAC-SHA1&oauth_timestamp=1518282682&oauth_nonce=u3TGDi&oauth_version=1.0&oauth_signature=kU0fH6vah556kooOwAcytUvJaUI%3D&q=cadiz&geocode=36.528580,-6.213026,5km
+
+https://api.twitter.com/1.1/search/tweets.json?oauth_consumer_key=h5csBXeGpJmLma9IgnoV3JWfn&oauth_token=223212203-5n4o9eTcRmKaxoPxtAelhufNzkdOTCSjn1dpku6U&oauth_signature_method=HMAC-SHA1&oauth_timestamp=1518282682&oauth_nonce=u3TGDi&oauth_version=1.0&oauth_signature=kU0fH6vah556kooOwAcytUvJaUI%3D&q=cadiz&geocode=36.528580,-6.213026,5km
+

@@ -29,8 +29,13 @@ def read_file(filename):
 
 @app.route('/tweets', methods=['GET'])
 def tweet_list():
+    from twitter_api import TwitterAPI
+    t = TwitterAPI()
+    t.set_query("cadiz", "36.528580", "-6.213026", "5")
+    result = t.get_json() 
     tweets = repository.list()
-    return jsonify(tweets)
+
+    return result
 
 
 if __name__ == '__main__':
