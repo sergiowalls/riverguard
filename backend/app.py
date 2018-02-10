@@ -7,12 +7,8 @@ from flask_cors import CORS
 
 from persistence import Persistence
 
-app = Flask(__name__, static_url_path='')
+app = Flask(__name__)
 CORS(app)
-
-@app.route('/<path:path>')
-def send_js(path):
-    return send_from_directory('../frontend/dist/', path)
 
 
 @app.route('/log')
