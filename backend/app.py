@@ -33,8 +33,8 @@ def tweet_list():
     t = TwitterAPI()
     t.set_query("cadiz", "36.528580", "-6.213026", "5")
     result = t.get_json() 
-    tweets = repository.list()
-    print results
+    #tweets = repository.list()
+    #print results
     return result
 
 
