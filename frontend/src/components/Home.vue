@@ -14,7 +14,7 @@
           :headers="headers"
           :items="items"
           class="elevation-1"
-          item-key="name"
+          item-key="id"
         >
           <template slot="items" slot-scope="props">
             <tr style="cursor: pointer;" @click="props.expanded = !props.expanded">
@@ -36,6 +36,7 @@
 <script>
   import KPI from "./KPI";
   import {TestResource} from '../api/TestResource'
+  import LeafletHeatMap from 'leaflet-heatmap'
 export default {
   components: {KPI},
   name: 'home',
@@ -52,7 +53,8 @@ export default {
           },
           { text: 'Coords', value: 'coords' }
         ],
-        markers: []
+        markers: [],
+        heat: []
       }
   },
   mounted: function () {
@@ -78,13 +80,17 @@ export default {
           this.markers[key] = L.marker([coords[0], coords[1]]).addTo(this.mymap)
           this.markers[key].bindPopup(json[key].text)
           var item = {}
+          item.id = key
           item.text = json[key].text
           item.coords = coords
           item.name = json[key].user.name
           this.items.push(item)
+          var heatItem = [coords[0], coords[1], 1]
+          this.heat.push(heatItem)
         }
       }
-
+      console.log(this.heat)
+      var heatMap = L.HeatLayer([this.heat],{radius: 25}).addTo(this.mymap)
     })
 
   }
