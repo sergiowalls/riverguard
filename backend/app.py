@@ -2,7 +2,7 @@ import os
 from logging import INFO
 from logging import basicConfig
 
-from flask import Flask, jsonify, logging
+from flask import Flask, jsonify, logging, send_from_directory
 from flask_cors import CORS
 
 from persistence import Persistence
