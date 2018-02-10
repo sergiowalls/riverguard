@@ -13,7 +13,8 @@ class Persistence:
         db_conn, db_client = self.create_connection()
         try:
             db_client.execute('CREATE TABLE IF NOT EXISTS ' + TWEET_TABLE + '''
-                         (id INTEGER PRIMARY KEY AUTOINCREMENT
+                         (id INTEGER PRIMARY KEY,
+                         content STRING NOT NULL
                          )''')
             db_conn.commit()
         except Exception as e:
@@ -38,7 +39,7 @@ class Persistence:
             self.log.error('Error closing the connection with the SQLite DB. Exception: ' + str(ex))
             raise ex
 
-    def create(self):
+    def create(self, tweet):
         sql_script = 'INSERT INTO ' + TWEET_TABLE + ' () VALUES ()'
         db_conn, db_client = self.create_connection()
         try:
