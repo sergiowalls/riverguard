@@ -9,9 +9,9 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-@app.route('../frontend/dist/<path:path>')
+@app.route('/<path:path>')
 def send_js(path):
-    return send_from_directory('js', path)
+    return send_from_directory('../frontend/dist/', path)
 
 
 @app.route('/log')
