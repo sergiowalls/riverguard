@@ -12,7 +12,7 @@ Vue.config.productionTip = false
 Vue.use(Vuetify)
 Vue.use(L)
 Vue.use(VueResource)
-Vue.http.options.root = "http://riverguard.ddns.net/"
+Vue.http.options.root = "http://riverguard.ddns.net:8080/"
 Vue.http.options.crossOrigin = true
 
 /* eslint-disable no-new */

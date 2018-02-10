@@ -10,8 +10,23 @@
         <div id="mapid" style="width: 100%;"></div>
       </v-flex>
       <v-flex xs4>
-        <v-data-table>
-
+        <v-data-table
+          :headers="headers"
+          :items="items"
+          class="elevation-1"
+          item-key="name"
+        >
+          <template slot="items" slot-scope="props">
+            <tr style="cursor: pointer;" @click="props.expanded = !props.expanded">
+              <td>{{ props.item.name }}</td>
+              <td class="text-xs-right">{{ props.item.coords }}</td>
+            </tr>
+          </template>
+          <template slot="expand" slot-scope="props">
+            <v-card flat>
+              <v-card-text>{{props.item.text}}</v-card-text>
+            </v-card>
+          </template>
         </v-data-table>
       </v-flex>
     </v-layout>
@@ -27,9 +42,17 @@ export default {
   data () {
       return {
         mymap: null,
-        points: [],
-        markers: [],
-        customDefault: null
+        items: [],
+        headers: [
+          {
+            text: 'Name',
+            align: 'left',
+            sortable: false,
+            value: 'name'
+          },
+          { text: 'Coords', value: 'coords' }
+        ],
+        markers: []
       }
   },
   mounted: function () {
@@ -48,12 +71,17 @@ export default {
       var x = response.body
       console.log(x.statuses)
       var json = x.statuses
-
+      console.log(json)
       for (var key in x.statuses) {
         if (json[key].geo !== null) {
           var coords = json[key].geo.coordinates
           this.markers[key] = L.marker([coords[0], coords[1]]).addTo(this.mymap)
           this.markers[key].bindPopup(json[key].text)
+          var item = {}
+          item.text = json[key].text
+          item.coords = coords
+          item.name = json[key].user.name
+          this.items.push(item)
         }
       }
 
