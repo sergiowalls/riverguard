@@ -1,5 +1,4 @@
 import os
-import time
 from logging import INFO
 from logging import basicConfig
 
@@ -26,6 +25,7 @@ def read_file(filename):
 
 @app.route('/tweets', methods=['GET'])
 def tweet_list():
+
     tweets = pmanager.list()
     return jsonify(tweets)
 

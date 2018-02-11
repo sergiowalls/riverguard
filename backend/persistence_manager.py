@@ -1,8 +1,11 @@
 import time
 
-from flask import logging
+from flask import logging, jsonify
 
 from persistence import Persistence
+from twitter_api import TwitterAPI
+from VisionAPI import VisionAPI
+
 from twitter_api import TwitterAPI
 
 TWEET_TABLE = 'tweets'
@@ -19,10 +22,20 @@ class PersistenceManager:
 
     def list(self):
         if (time.time() - self.last_request) >= ONE_MINUTE:
-            self.twitterAPI.set_query("cadiz", "36.528580", "-6.213026", "5")
-            result = self.twitterAPI.get_json()
+
+            t = TwitterAPI()
+            t.set_query("cadiz", "36.528580", "-6.213026", "5")
+            active = t.get_active_tweets()
+            passive = t.get_passive_tweets()
+            photos = t.extract_image_tweets(passive)[:15]
+
+            v = VisionAPI()
+            photos = v.tag_images(photos)
+
+            result = jsonify(active + photos)
+
             self.log.info('getting tweets from twitter')
-            for tweet in result['statuses']:
+            for tweet in result:
                 self.repository.create(tweet)
             self.last_request = time.time()
         return self.repository.list()
