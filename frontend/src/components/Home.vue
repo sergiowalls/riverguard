@@ -1,7 +1,7 @@
 <template>
   <v-container grid-list-md fluid>
     <v-layout row>
-      <v-flex xs4><k-p-i title="Tweets recorded" icon="insert_comment" content="267 in last hour" color="primary"></k-p-i></v-flex>
+      <v-flex xs4><k-p-i title="Tweets recorded" icon="feedback" content="267 in last hour" color="primary"></k-p-i></v-flex>
       <v-flex xs4><k-p-i title="New Locations" icon="warning" content="3 in last hour" color="warning"></k-p-i></v-flex>
       <v-flex xs4><k-p-i title="Increment" icon="insert_chart" content="3%" color="error"></k-p-i></v-flex>
     </v-layout>
@@ -14,17 +14,20 @@
           :headers="headers"
           :items="items"
           class="elevation-1"
-          item-key="name"
+          item-key="id"
         >
           <template slot="items" slot-scope="props">
-            <tr style="cursor: pointer;" @click="props.expanded = !props.expanded">
-              <td>{{ props.item.name }}</td>
-              <td class="text-xs-right">{{ props.item.coords }}</td>
+            <tr >
+              <td style="cursor: pointer;" @click="props.expanded = !props.expanded" width="70%">{{ props.item.name }}</td>
+              <td width="15%"><v-btn flat icon @click="up(props.item.id)"><v-icon color="green">thumb_up</v-icon></v-btn></td>
+              <td width="15%"><v-btn flat icon @click="down(props.item.id)"><v-icon color="red">thumb_down</v-icon></v-btn></td>
             </tr>
           </template>
           <template slot="expand" slot-scope="props">
             <v-card flat>
-              <v-card-text>{{props.item.text}}</v-card-text>
+              <v-card-text><v-icon>insert_comment</v-icon>{{props.item.text}}</v-card-text>
+              <v-card-text><v-icon>location_on</v-icon>{{props.item.coords}}</v-card-text>
+              <v-card-media v-if="props.item.img"><img :src="props.item.img" /></v-card-media>
             </v-card>
           </template>
         </v-data-table>
@@ -36,6 +39,7 @@
 <script>
   import KPI from "./KPI";
   import {TestResource} from '../api/TestResource'
+  import LeafletHeatMap from 'leaflet-heatmap'
 export default {
   components: {KPI},
   name: 'home',
@@ -52,7 +56,8 @@ export default {
           },
           { text: 'Coords', value: 'coords' }
         ],
-        markers: []
+        markers: [],
+        heat: []
       }
   },
   mounted: function () {
@@ -78,15 +83,36 @@ export default {
           this.markers[key] = L.marker([coords[0], coords[1]]).addTo(this.mymap)
           this.markers[key].bindPopup(json[key].text)
           var item = {}
+          item.id = key
           item.text = json[key].text
           item.coords = coords
           item.name = json[key].user.name
           this.items.push(item)
+          if (json[key].entities.media) {
+            item.img = json[key].entities.media[0].media_url
+          }
+          //var heatItem = [coords[0], coords[1], 1]
+          //this.heat.push(heatItem)
         }
       }
-
+      console.log(this.heat)
+      //var heatMap = L.HeatLayer([this.heat],{radius: 25}).addTo(this.mymap)
     })
 
+  },
+  methods: {
+    up: function (id) {
+      console.log(this._.find(this.items, function (i) {
+        return i.id === id
+      }))
+      this.items.splice(id,1)
+    },
+    down: function (id) {
+      console.log(this._.find(this.items, function (i) {
+        return i.id === id
+      }))
+      this.items.splice(id,1)
+    },
   }
 }
 </script>
