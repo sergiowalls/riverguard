@@ -17,10 +17,18 @@ class VisionAPI:
         image_json = "{\"image\":" + Image + ",\"features\": [" + Feature + "]}"
         return image_json
 
+    def tag_images(self, image_tweets):
+        urls = [tweet['entities']['media'][0]['media_url'] for tweet in image_tweets]
+        labels = self.get_image_labels(urls)
+        for index, item in enumerate(image_tweets): #TODO
+            item['tags'] = labels[index]
+        return image_tweets
+
     def get_image_labels(self, image_urls):
         #image_urls = ["https://pbs.twimg.com/media/DVru7X_UQAUfVAr.jpg"]
 
-        json = "{\"requests\": ["
+        json = "{\"requests\": [" #TODO tratar todas las imagenes y no solo las 16 primeras
+
         for image_url in image_urls:
             json += self.build_image_json(image_url) + ","
         json += "]}"
@@ -28,6 +36,7 @@ class VisionAPI:
         r = requests.post(self.build_url(), data=json).json()
 
         total_labels = []
+        print r
         for resp in r["responses"]:
             labels = []
             if "labelAnnotations" in resp:
