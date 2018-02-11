@@ -2,10 +2,8 @@ import time
 
 from flask import logging, jsonify
 
-from persistence import Persistence
-from twitter_api import TwitterAPI
 from VisionAPI import VisionAPI
-
+from persistence import Persistence
 from twitter_api import TwitterAPI
 
 TWEET_TABLE = 'tweets'
