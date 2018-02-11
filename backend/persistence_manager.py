@@ -6,7 +6,7 @@ from VisionAPI import VisionAPI
 from persistence import Persistence
 from twitter_api import TwitterAPI
 
-RADIUS = "20"
+RADIUS = "13"
 
 TWEET_TABLE = 'tweets'
 CACHE_TIME = 20
