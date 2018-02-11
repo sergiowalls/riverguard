@@ -38,6 +38,4 @@ if __name__ == '__main__':
     db = os.path.join(abs_path, os.environ['DB_PATH'])
     pmanager = PersistenceManager(db, logging.getLogger(__name__))
 
-    last_request = time.time()
-
     app.run(host=os.environ['IP_LISTEN'], port=int(os.environ['PORT_LISTEN']), threaded=True)
