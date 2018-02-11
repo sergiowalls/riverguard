@@ -73,15 +73,19 @@ export default {
 
     TestResource().get().then(response => {
       var x = response.body
-      console.log(x.statuses)
       var json = x
       for (var key in json) {
         var tweet = json[key].tweet
+        console.log(tweet)
         var item = {}
         if (tweet.geo !== null) {
           var coords = tweet.geo.coordinates
           this.markers[key] = L.marker([coords[0], coords[1]]).addTo(this.mymap)
-          this.markers[key].bindPopup(tweet.text)
+          if (tweet.entities.media) {
+            this.markers[key].bindPopup(tweet.text + '<br><img width="100%" src="'+tweet.entities.media[0].media_url+'"/>')
+          } else {
+            this.markers[key].bindPopup(tweet.text)
+          }
           item.coords = coords
         }
           item.id = key
@@ -92,6 +96,7 @@ export default {
             item.img = tweet.entities.media[0].media_url
           }
         }
+        console.log(this.markers)
     })
 
   },
