@@ -1,3 +1,4 @@
+import json
 import sqlite3
 from collections import OrderedDict
 
@@ -46,7 +47,7 @@ class Persistence:
         db_conn, db_client = self.create_connection()
         try:
             cursor = db_conn.cursor()
-            cursor.execute(sql_script, {'id': tweet['id'], 'tweet': str(jsonify(tweet))})
+            cursor.execute(sql_script, {'id': tweet['id'], 'tweet': json.dumps(tweet)})
             db_conn.commit()
             self.close_connection(db_conn)
             return None
