@@ -31,6 +31,7 @@
             </v-card>
           </template>
         </v-data-table>
+        <v-progress-circular v-show="!loaded" indeterminate color="primary"></v-progress-circular>
       </v-flex>
     </v-layout>
   </v-container>
@@ -39,6 +40,7 @@
 <script>
   import KPI from "./KPI";
   import {TestResource} from '../api/TestResource'
+  import Twitter from 'Twitter'
 export default {
   components: {KPI},
   name: 'home',
@@ -56,7 +58,8 @@ export default {
           { text: 'Coords', value: 'coords' }
         ],
         markers: [],
-        heat: []
+        heat: [],
+        loaded: false
       }
   },
   mounted: function () {
@@ -91,16 +94,23 @@ export default {
           item.id = key
           item.text = tweet.text
           item.name = tweet.user.name
+          item.userid = tweet.user.id
           this.items.push(item)
           if (tweet.entities.media) {
             item.img = tweet.entities.media[0].media_url
           }
         }
         console.log(this.markers)
+        this.loaded = true
     })
 
   },
   methods: {
+    findItemById: function (collection, id) {
+      return this._.find(collection, function (i) {
+        return i.id === id
+      })
+    },
     up: function (id) {
       this.deleteItem(id)
     },
