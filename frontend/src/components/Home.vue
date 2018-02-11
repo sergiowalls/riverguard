@@ -27,6 +27,7 @@
             <v-card flat>
               <v-card-text><v-icon>insert_comment</v-icon>{{props.item.text}}</v-card-text>
               <v-card-text><v-icon>location_on</v-icon>{{props.item.coords}}</v-card-text>
+              <v-card-text><v-icon>location_on</v-icon>{{props.item.tags}}</v-card-text>
               <v-card-media v-if="props.item.img" height="200px" :contain="true"><img :src="props.item.img" /></v-card-media>
             </v-card>
           </template>
@@ -95,6 +96,7 @@ export default {
           item.text = tweet.text
           item.name = tweet.user.name
           item.userid = tweet.user.id
+          item.tags = tweet.tags
           this.items.push(item)
           if (tweet.entities.media) {
             item.img = tweet.entities.media[0].media_url
