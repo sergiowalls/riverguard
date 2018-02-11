@@ -32,9 +32,11 @@ def tweet_list():
     from twitter_api import TwitterAPI
     t = TwitterAPI()
     t.set_query("cadiz", "36.528580", "-6.213026", "5")
-    result = t.get_json() 
-    #tweets = repository.list()
-    #print results
+    active = t.get_active_tweets()
+    passive = t.get_passive_tweets()
+    photos = t.extract_image_tweets(passive)
+    print len(photos['statuses'])
+
     return jsonify(result)
 
 
