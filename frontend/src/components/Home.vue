@@ -1,15 +1,15 @@
 <template>
   <v-container grid-list-md fluid>
-    <v-layout row>
-      <v-flex xs4><k-p-i title="Tweets recorded" icon="feedback" content="267 in last hour" color="primary"></k-p-i></v-flex>
-      <v-flex xs4><k-p-i title="New Locations" icon="warning" content="3 in last hour" color="warning"></k-p-i></v-flex>
-      <v-flex xs4><k-p-i title="Increment" icon="insert_chart" content="3%" color="error"></k-p-i></v-flex>
+    <v-layout>
+      <v-flex xs12><k-p-i title="Tweets recorded" icon="feedback" content="267 in last hour" color="primary"></k-p-i></v-flex>
+      <v-flex xs12><k-p-i title="New Locations" icon="warning" content="3 in last hour" color="warning"></k-p-i></v-flex>
+      <v-flex xs12><k-p-i title="Increment" icon="insert_chart" content="3%" color="error"></k-p-i></v-flex>
     </v-layout>
     <v-layout row>
-      <v-flex xs8>
+      <v-flex xs12 md8>
         <div id="mapid" style="width: 100%; z-index: 0;"></div>
       </v-flex>
-      <v-flex xs4>
+      <v-flex xs12 md4>
         <v-data-table
           :headers="headers"
           :items="items"
@@ -19,8 +19,8 @@
           <template slot="items" slot-scope="props">
             <tr >
               <td style="cursor: pointer;" @click="props.expanded = !props.expanded" width="70%">{{ props.item.name }}</td>
-              <td width="15%"><v-btn flat icon @click="up(props.item.id)"><v-icon color="green">thumb_up</v-icon></v-btn></td>
-              <td width="15%"><v-btn flat icon @click="down(props.item.id)"><v-icon color="red">thumb_down</v-icon></v-btn></td>
+              <td width="15%"><v-btn flat icon @click="up(props.item.id)"><v-icon color="green">new_releases</v-icon></v-btn></td>
+              <td width="15%"><v-btn flat icon @click="down(props.item.id)"><v-icon color="red">delete</v-icon></v-btn></td>
             </tr>
           </template>
           <template slot="expand" slot-scope="props">
@@ -39,7 +39,6 @@
 <script>
   import KPI from "./KPI";
   import {TestResource} from '../api/TestResource'
-  import LeafletHeatMap from 'leaflet-heatmap'
 export default {
   components: {KPI},
   name: 'home',
@@ -78,7 +77,6 @@ export default {
       var json = x
       for (var key in json) {
         var tweet = json[key].tweet
-        console.log(tweet)
         var item = {}
         if (tweet.geo !== null) {
           var coords = tweet.geo.coordinates
@@ -99,14 +97,16 @@ export default {
   },
   methods: {
     up: function (id) {
-      this.items = this.deleteItem(id)
+      this.deleteItem(id)
     },
     down: function (id) {
       this.deleteItem(id)
     },
     deleteItem: function (id) {
+      console.log(this.items)
       for (var key in this.items) {
         if (this.items[key].id === id) {
+          console.log('delete ' + key)
           this.items.splice(key, 1)
         }
       }
