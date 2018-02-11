@@ -25,9 +25,9 @@
           </template>
           <template slot="expand" slot-scope="props">
             <v-card flat>
-              <v-card-text><v-icon>insert_comment</v-icon>{{props.item.text}}</v-card-text>
-              <v-card-text><v-icon>location_on</v-icon>{{props.item.coords}}</v-card-text>
-              <v-card-text><v-icon>location_on</v-icon>{{props.item.tags}}</v-card-text>
+              <v-card-text class="mb-0"><v-icon class="mr-2">insert_comment</v-icon>{{props.item.text}}</v-card-text>
+              <v-card-text><v-icon class="mr-2">location_on</v-icon>{{props.item.coords}}</v-card-text>
+              <v-card-text v-if="props.item.tags">Predicted tags: <br><v-icon class="mr-2">#</v-icon>{{props.item.tags}}</v-card-text>
               <v-card-media v-if="props.item.img" height="200px" :contain="true"><img :src="props.item.img" /></v-card-media>
             </v-card>
           </template>
@@ -96,7 +96,13 @@ export default {
           item.text = tweet.text
           item.name = tweet.user.name
           item.userid = tweet.user.id
-          item.tags = tweet.tags
+          item.tags = ''
+          if (tweet.tags) {
+            for (var key2 in tweet.tags) {
+              item.tags += tweet.tags[key2].Label + ', '
+            }
+          }
+          console.log('tags: ' + item.tags)
           this.items.push(item)
           if (tweet.entities.media) {
             item.img = tweet.entities.media[0].media_url
@@ -114,7 +120,20 @@ export default {
       })
     },
     up: function (id) {
-      this.deleteItem(id)
+      var client = new Twitter({
+        consumer_key:  process.env.consumer_key,
+        consumer_secret:  process.env.consumer_secret,
+        access_token_key:  process.env.access_token_key,
+        access_token_secret:  process.env.access_token_secret
+      })
+      console.log(client)
+      var tweetMsg = this.findItemById(this.items, id);
+      console.log(tweetMsg)
+      client.post("direct_messages/new", {
+        user_id: tweetMsg.userid, // USER_ID is parameter from directMsg object
+        text: 'GONREDOOOOOOOOOOOOOO'
+      });
+      // this.deleteItem(id)
     },
     down: function (id) {
       this.deleteItem(id)
