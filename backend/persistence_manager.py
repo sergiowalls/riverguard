@@ -30,7 +30,7 @@ class PersistenceManager:
 
             v = VisionAPI()
             passive = v.tag_images(passive)
-            relevant_tags = ["waste", "algae", "fish", "water"]
+            relevant_tags = ["waste", "algae", "fish", "water", "litter"]
             passive = self.filter_non_relevant_tweets(passive, relevant_tags)
 
             tweets = active + passive
