@@ -7,19 +7,19 @@ from persistence import Persistence
 from twitter_api import TwitterAPI
 
 TWEET_TABLE = 'tweets'
-ONE_MINUTE = 60
+CACHE_TIME = 20
 
 
 class PersistenceManager:
     def __init__(self, path, log):
-        self.last_request = time.time() - ONE_MINUTE
+        self.last_request = time.time() - CACHE_TIME
         self.log = log
         self.twitterAPI = TwitterAPI()
         self.repository = Persistence(path, logging.getLogger(__name__))
         self.repository.init_db()
 
     def list(self):
-        if (time.time() - self.last_request) >= ONE_MINUTE:
+        if (time.time() - self.last_request) >= CACHE_TIME:
 
             t = TwitterAPI()
             active = t.get_active_tweets("#riverguard", "36.528580", "-6.213026", "5")["statuses"]
