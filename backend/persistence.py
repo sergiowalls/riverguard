@@ -94,6 +94,7 @@ class Persistence:
             parking_list = []
             for row in rows:
                 parking_row = OrderedDict(zip(keys, row))
+                parking_row['tweet'] = json.loads(parking_row['tweet'], object_pairs_hook=OrderedDict)
                 parking_list.append(parking_row)
             self.close_connection(db_conn)
             return parking_list
