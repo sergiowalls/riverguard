@@ -155,6 +155,6 @@ export default {
 
 <style scoped>
   #mapid {
-    height: 400px;
+    height: 600px;
   }
 </style>
