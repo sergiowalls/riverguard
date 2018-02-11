@@ -7,7 +7,7 @@
     </v-layout>
     <v-layout row>
       <v-flex xs8>
-        <div id="mapid" style="width: 100%;"></div>
+        <div id="mapid" style="width: 100%; z-index: 0;"></div>
       </v-flex>
       <v-flex xs4>
         <v-data-table
@@ -27,7 +27,7 @@
             <v-card flat>
               <v-card-text><v-icon>insert_comment</v-icon>{{props.item.text}}</v-card-text>
               <v-card-text><v-icon>location_on</v-icon>{{props.item.coords}}</v-card-text>
-              <v-card-media v-if="props.item.img"><img :src="props.item.img" /></v-card-media>
+              <v-card-media v-if="props.item.img" height="200px" :contain="true"><img :src="props.item.img" /></v-card-media>
             </v-card>
           </template>
         </v-data-table>
@@ -75,44 +75,42 @@ export default {
     TestResource().get().then(response => {
       var x = response.body
       console.log(x.statuses)
-      var json = x.statuses
-      console.log(json)
-      for (var key in x.statuses) {
-        if (json[key].geo !== null) {
-          var coords = json[key].geo.coordinates
+      var json = x
+      for (var key in json) {
+        var tweet = json[key].tweet
+        console.log(tweet)
+        var item = {}
+        if (tweet.geo !== null) {
+          var coords = tweet.geo.coordinates
           this.markers[key] = L.marker([coords[0], coords[1]]).addTo(this.mymap)
-          this.markers[key].bindPopup(json[key].text)
-          var item = {}
-          item.id = key
-          item.text = json[key].text
+          this.markers[key].bindPopup(tweet.text)
           item.coords = coords
-          item.name = json[key].user.name
-          this.items.push(item)
-          if (json[key].entities.media) {
-            item.img = json[key].entities.media[0].media_url
-          }
-          //var heatItem = [coords[0], coords[1], 1]
-          //this.heat.push(heatItem)
         }
-      }
-      console.log(this.heat)
-      //var heatMap = L.HeatLayer([this.heat],{radius: 25}).addTo(this.mymap)
+          item.id = key
+          item.text = tweet.text
+          item.name = tweet.user.name
+          this.items.push(item)
+          if (tweet.entities.media) {
+            item.img = tweet.entities.media[0].media_url
+          }
+        }
     })
 
   },
   methods: {
     up: function (id) {
-      console.log(this._.find(this.items, function (i) {
-        return i.id === id
-      }))
-      this.items.splice(id,1)
+      this.items = this.deleteItem(id)
     },
     down: function (id) {
-      console.log(this._.find(this.items, function (i) {
-        return i.id === id
-      }))
-      this.items.splice(id,1)
+      this.deleteItem(id)
     },
+    deleteItem: function (id) {
+      for (var key in this.items) {
+        if (this.items[key].id === id) {
+          this.items.splice(key, 1)
+        }
+      }
+    }
   }
 }
 </script>
