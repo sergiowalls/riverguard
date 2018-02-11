@@ -15,6 +15,7 @@
           :items="items"
           class="elevation-1"
           item-key="id"
+          :rows-per-page-items="rowsPageItems"
         >
           <template slot="items" slot-scope="props">
             <tr >
@@ -60,7 +61,8 @@ export default {
         ],
         markers: [],
         heat: [],
-        loaded: false
+        loaded: false,
+        rowsPageItems: [10, 20, 30, { text: 'All', value: -1 }]
       }
   },
   mounted: function () {

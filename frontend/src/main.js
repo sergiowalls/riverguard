@@ -17,6 +17,8 @@ Vue.use(VueResource)
 Vue.use(VueLodash, lodash)
 Vue.http.options.root = "http://riverguard.ddns.net:8080/"
 Vue.http.options.crossOrigin = true
+Vue.http.headers.common['Access-Control-Allow-Origin'] = true
+Vue.http.headers.common['Access-Control-Allow-Origin'] = '*'
 
 /* eslint-disable no-new */
 new Vue({
