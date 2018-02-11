@@ -22,18 +22,17 @@ class PersistenceManager:
         if (time.time() - self.last_request) >= ONE_MINUTE:
 
             t = TwitterAPI()
-            t.set_query("cadiz", "36.528580", "-6.213026", "5")
-            active = t.get_active_tweets()
-            passive = t.get_passive_tweets()
-            photos = t.extract_image_tweets(passive)[:15]
+            active = t.get_active_tweets("#riverguard", "36.528580", "-6.213026", "5")["statuses"]
+            passive = t.get_passive_tweets("36.528580", "-6.213026", "5")["statuses"]
+            passive = t.extract_image_tweets(passive)[:15]
 
             v = VisionAPI()
-            photos = v.tag_images(photos)
+            passive = v.tag_images(passive)
 
-            result = jsonify(active + photos)
+            tweets = active + passive
 
             self.log.info('getting tweets from twitter')
-            for tweet in result:
+            for tweet in tweets:
                 self.repository.create(tweet)
             self.last_request = time.time()
         return self.repository.list()
