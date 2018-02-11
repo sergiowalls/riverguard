@@ -6,6 +6,8 @@ from VisionAPI import VisionAPI
 from persistence import Persistence
 from twitter_api import TwitterAPI
 
+RADIUS = "20"
+
 TWEET_TABLE = 'tweets'
 CACHE_TIME = 20
 
@@ -22,8 +24,8 @@ class PersistenceManager:
         if (time.time() - self.last_request) >= CACHE_TIME:
 
             t = TwitterAPI()
-            active = t.get_active_tweets("#riverguard", "36.528580", "-6.213026", "5")["statuses"]
-            passive = t.get_passive_tweets("36.528580", "-6.213026", "5")["statuses"]
+            active = t.get_active_tweets("#riverguard", "36.528580", "-6.213026", RADIUS)["statuses"]
+            passive = t.get_passive_tweets("36.528580", "-6.213026", RADIUS)["statuses"]
             passive = t.extract_image_tweets(passive)[:15]
 
             v = VisionAPI()
