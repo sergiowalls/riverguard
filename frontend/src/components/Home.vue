@@ -27,6 +27,7 @@
             <v-card flat>
               <v-card-text><v-icon>insert_comment</v-icon>{{props.item.text}}</v-card-text>
               <v-card-text><v-icon>location_on</v-icon>{{props.item.coords}}</v-card-text>
+              <v-card-media v-if="props.item.img"><img :src="props.item.img" /></v-card-media>
             </v-card>
           </template>
         </v-data-table>
@@ -87,12 +88,15 @@ export default {
           item.coords = coords
           item.name = json[key].user.name
           this.items.push(item)
-          var heatItem = [coords[0], coords[1], 1]
-          this.heat.push(heatItem)
+          if (json[key].entities.media) {
+            item.img = json[key].entities.media[0].media_url
+          }
+          //var heatItem = [coords[0], coords[1], 1]
+          //this.heat.push(heatItem)
         }
       }
       console.log(this.heat)
-      var heatMap = L.HeatLayer([this.heat],{radius: 25}).addTo(this.mymap)
+      //var heatMap = L.HeatLayer([this.heat],{radius: 25}).addTo(this.mymap)
     })
 
   },
