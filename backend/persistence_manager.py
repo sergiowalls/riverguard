@@ -6,7 +6,7 @@ from persistence import Persistence
 from twitter_api import TwitterAPI
 
 TWEET_TABLE = 'tweets'
-ONE_MINUTE = 60000
+ONE_MINUTE = 60
 
 
 class PersistenceManager:

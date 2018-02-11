@@ -1,6 +1,8 @@
 import sqlite3
 from collections import OrderedDict
 
+from flask import jsonify
+
 TWEET_TABLE = 'tweets'
 
 
@@ -14,7 +16,7 @@ class Persistence:
         try:
             db_client.execute('CREATE TABLE IF NOT EXISTS ' + TWEET_TABLE + '''
                          (id INTEGER PRIMARY KEY,
-                         content STRING NOT NULL
+                         tweet STRING NOT NULL
                          )''')
             db_conn.commit()
         except Exception as e:
@@ -40,12 +42,11 @@ class Persistence:
             raise ex
 
     def create(self, tweet):
-        sql_script = 'INSERT INTO ' + TWEET_TABLE + ' () VALUES ()'
+        sql_script = 'REPLACE INTO ' + TWEET_TABLE + ' (id,tweet) VALUES (:id,:tweet)'
         db_conn, db_client = self.create_connection()
         try:
             cursor = db_conn.cursor()
-            cursor.execute(sql_script, {})
-            tweet_id = cursor.lastrowid
+            cursor.execute(sql_script, {'id': tweet['id'], 'tweet': str(jsonify(tweet))})
             db_conn.commit()
             self.close_connection(db_conn)
             return None
