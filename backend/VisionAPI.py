@@ -36,7 +36,6 @@ class VisionAPI:
         r = requests.post(self.build_url(), data=json).json()
 
         total_labels = []
-        print r
         for resp in r["responses"]:
             labels = []
             if "labelAnnotations" in resp:

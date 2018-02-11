@@ -1,3 +1,4 @@
+import json
 import sqlite3
 from collections import OrderedDict
 
@@ -46,7 +47,7 @@ class Persistence:
         db_conn, db_client = self.create_connection()
         try:
             cursor = db_conn.cursor()
-            cursor.execute(sql_script, {'id': tweet['id'], 'tweet': str(jsonify(tweet))})
+            cursor.execute(sql_script, {'id': tweet['id'], 'tweet': json.dumps(tweet)})
             db_conn.commit()
             self.close_connection(db_conn)
             return None
@@ -93,6 +94,7 @@ class Persistence:
             parking_list = []
             for row in rows:
                 parking_row = OrderedDict(zip(keys, row))
+                parking_row['tweet'] = json.loads(parking_row['tweet'], object_pairs_hook=OrderedDict)
                 parking_list.append(parking_row)
             self.close_connection(db_conn)
             return parking_list
