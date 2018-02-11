@@ -1,18 +1,15 @@
 import os
+import time
 from logging import INFO
 from logging import basicConfig
 
-from flask import Flask, jsonify, logging, send_from_directory
+from flask import Flask, jsonify, logging
 from flask_cors import CORS
 
-from persistence import Persistence
+from persistence_manager import PersistenceManager
 
-app = Flask(__name__, static_url_path='')
+app = Flask(__name__)
 CORS(app)
-
-@app.route('/<path:path>')
-def send_js(path):
-    return send_from_directory('../frontend/dist/', path)
 
 
 @app.route('/log')
@@ -29,15 +26,8 @@ def read_file(filename):
 
 @app.route('/tweets', methods=['GET'])
 def tweet_list():
-    from twitter_api import TwitterAPI
-    t = TwitterAPI()
-    t.set_query("cadiz", "36.528580", "-6.213026", "5")
-    active = t.get_active_tweets()
-    passive = t.get_passive_tweets()
-    photos = t.extract_image_tweets(passive)
-    print len(photos['statuses'])
-
-    return jsonify(result)
+    tweets = pmanager.list()
+    return jsonify(tweets)
 
 
 if __name__ == '__main__':
@@ -46,7 +36,8 @@ if __name__ == '__main__':
     basicConfig(filename=log, level=INFO)
 
     db = os.path.join(abs_path, os.environ['DB_PATH'])
-    repository = Persistence(db, logging.getLogger(__name__))
-    repository.init_db()
+    pmanager = PersistenceManager(db, logging.getLogger(__name__))
+
+    last_request = time.time()
 
     app.run(host=os.environ['IP_LISTEN'], port=int(os.environ['PORT_LISTEN']), threaded=True)
