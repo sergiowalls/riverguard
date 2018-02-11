@@ -43,7 +43,7 @@ class Persistence:
             raise ex
 
     def create(self, tweet):
-        sql_script = 'REPLACE INTO ' + TWEET_TABLE + ' (id,tweet) VALUES (:id,:tweet)'
+        sql_script = 'INSERT OR REPLACE INTO ' + TWEET_TABLE + ' (id,tweet) VALUES (:id,:tweet)'
         db_conn, db_client = self.create_connection()
         try:
             cursor = db_conn.cursor()
