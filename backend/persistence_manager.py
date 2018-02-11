@@ -28,6 +28,8 @@ class PersistenceManager:
 
             v = VisionAPI()
             passive = v.tag_images(passive)
+            relevant_tags = ["waste", "algae"]
+            passive = self.filter_non_relevant_tweets(passive, relevant_tags)
 
             tweets = active + passive
 
@@ -36,3 +38,11 @@ class PersistenceManager:
                 self.repository.create(tweet)
             self.last_request = time.time()
         return self.repository.list()
+
+    def filter_non_relevant_tweets(self, tweets, relevant_tags):
+        filtered_tweets = []
+        for tweet in tweets:
+            tags = [tag["Label"] for tag in tweet["tags"]]
+            if set(relevant_tags) & set(tags):
+                filtered_tweets.append(tweet)
+        return filtered_tweets
