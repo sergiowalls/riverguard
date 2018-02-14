@@ -122,20 +122,7 @@ export default {
       })
     },
     up: function (id) {
-      var client = new Twitter({
-        consumer_key:  process.env.consumer_key,
-        consumer_secret:  process.env.consumer_secret,
-        access_token_key:  process.env.access_token_key,
-        access_token_secret:  process.env.access_token_secret
-      })
-      console.log(client)
-      var tweetMsg = this.findItemById(this.items, id);
-      console.log(tweetMsg)
-      client.post("direct_messages/new", {
-        user_id: tweetMsg.userid, // USER_ID is parameter from directMsg object
-        text: 'GONREDOOOOOOOOOOOOOO'
-      });
-      // this.deleteItem(id)
+      this.deleteItem(id)
     },
     down: function (id) {
       this.deleteItem(id)
