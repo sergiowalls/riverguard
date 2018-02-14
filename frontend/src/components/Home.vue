@@ -1,11 +1,11 @@
 <template>
   <v-container grid-list-md fluid>
-    <v-layout>
-      <v-flex xs12><k-p-i title="Tweets recorded" icon="feedback" content="267 in last hour" color="primary"></k-p-i></v-flex>
-      <v-flex xs12><k-p-i title="New Locations" icon="warning" content="3 in last hour" color="warning"></k-p-i></v-flex>
-      <v-flex xs12><k-p-i title="Increment" icon="insert_chart" content="3%" color="error"></k-p-i></v-flex>
+    <v-layout row wrap>
+      <v-flex xs12 md4><k-p-i title="Tweets recorded" icon="feedback" content="267 in last hour" color="primary"></k-p-i></v-flex>
+      <v-flex xs12 md4><k-p-i title="New Locations" icon="warning" content="3 in last hour" color="warning"></k-p-i></v-flex>
+      <v-flex xs12 md4><k-p-i title="Increment" icon="insert_chart" content="3%" color="error"></k-p-i></v-flex>
     </v-layout>
-    <v-layout row>
+    <v-layout row wrap>
       <v-flex xs12 md8>
         <div id="mapid" style="width: 100%; z-index: 0;"></div>
       </v-flex>
