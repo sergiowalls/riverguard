@@ -4,7 +4,7 @@ import requests
 class VisionAPI:
     def __init__(self):
         self.url = 'https://vision.googleapis.com/v1p1beta1/images:annotate'
-        self.KEY = "AIzaSyB1i8WBPtqil7aNJO4X5EI4xAo-fTs-tmY"
+        self.KEY = "AIzaSyA23PlC1V8ELgbh4iGiil65_TuS4HoFBMc"
         self.maxResults = 10
 
     def build_url(self):
